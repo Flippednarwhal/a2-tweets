@@ -28,7 +28,9 @@ class Tweet {
 
     //returns a boolean, whether the text includes any content written by the person tweeting.
     get written():boolean {
-        //TODO: identify whether the tweet is written
+        if (this.text.includes(" - ")) {
+            return true;
+        }
         return false;
     }
 
@@ -37,7 +39,16 @@ class Tweet {
             return "";
         }
         //TODO: parse the written text from the tweet
-        return "";
+        var written = this.text;
+
+        var cleaning_written = written.split(" ").slice(0, -2).join(' ');
+
+        let begin = cleaning_written.indexOf('-');
+        var clean_written = cleaning_written.slice(begin+1);
+
+
+        
+        return clean_written.trim();
     }
 
     get activityType():string {
