@@ -99,6 +99,20 @@ class Tweet {
         if(this.source != 'completed_event') {
             return 0;
         }
+
+        let split_text = this.text.split(' ');
+        let num: number = Number(split_text[3]);
+
+        if (isNaN(num) == false){
+            if (split_text[4] == 'km'){
+                return num / 1.609;
+            }
+
+            else if (split_text[4] == 'mi'){
+                return num;
+            }
+        }
+
         //TODO: prase the distance from the text of the tweet
         return 0;
     }

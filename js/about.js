@@ -28,6 +28,8 @@ function parseTweets(runkeeper_tweets) {
 
 	}
 
+	console.log(tweet_array[776].distance)
+
 	event_num(tweet_array);
 
 	
