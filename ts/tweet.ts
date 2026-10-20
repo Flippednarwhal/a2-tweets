@@ -55,7 +55,43 @@ class Tweet {
         if (this.source != 'completed_event') {
             return "unknown";
         }
+
         //TODO: parse the activity type from the text of the tweet
+        let split_text = this.text.split(' ');
+
+        let index_dis = 4;
+        // let index_mi = split_text.indexOf("mi");
+
+        let index_dash = split_text.indexOf('-');
+        let index_with = split_text.indexOf('with');
+
+        if (split_text[4] == 'km'){
+            if (index_dash != -1){
+                 return split_text.slice(index_dis+1, index_dash).join(' ');
+            }
+
+            else if (index_with != -1){
+                    return split_text.slice(index_dis+1, index_with).join(' ');
+            }
+            
+
+        }
+
+        else if (split_text[4] == 'mi'){
+            if (index_dash != -1){
+                 return split_text.slice(index_dis+1, index_dash).join(' ');
+            }
+
+            else if (index_with != -1){
+                return split_text.slice(index_dis+1, index_with).join(' ')
+            }
+        }
+
+        else {
+            // console.log(split_text.indexOf('in'));
+            return split_text.slice(3, split_text.indexOf('in')).join(' ');
+        }
+        
         return "";
     }
 
