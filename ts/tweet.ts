@@ -88,8 +88,12 @@ class Tweet {
         }
 
         else {
-            // console.log(split_text.indexOf('in'));
-            return split_text.slice(3, split_text.indexOf('in')).join(' ');
+            if (split_text.includes("in")){
+                return split_text.slice(3, split_text.indexOf('in')).join(' ');
+            }
+            else {
+                return "unknown";
+            }
         }
         
         return "";
