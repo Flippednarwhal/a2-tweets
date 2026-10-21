@@ -10,6 +10,9 @@ function parseTweets(runkeeper_tweets) {
 		return new Tweet(tweet.text, tweet.created_at);
 	});
 
+
+
+
 	// retrieves and sets the earliest and latest dates of tweets on front page
 	first_last(tweet_array);
 	
@@ -28,7 +31,21 @@ function parseTweets(runkeeper_tweets) {
 
 	}
 
-	console.log(tweet_array[776].distance)
+	var total_activites = activity_stats(tweet_array);
+
+	var total_dis = total_distance(tweet_array);
+
+	var popular_act = filter_popular(total_activites);
+
+	var longest = longest_distance(popular_act, total_dis);
+	var shortest = shortest_distance(popular_act, total_dis);
+	
+
+	console.log(total_activites);
+	console.log(total_dis);
+	console.log(popular_act);
+	console.log(longest);
+
 
 	event_num(tweet_array);
 
@@ -38,6 +55,74 @@ function parseTweets(runkeeper_tweets) {
 	//It works correctly, your task is to update the text of the other tags in the HTML file!
 	document.getElementById('numberTweets').innerText = tweet_array.length;	
 }
+
+
+
+function total_distance(tweet_array){
+	var counter = {};
+
+	for (let i = 0; i < tweet_array.length; i++){
+		let val = tweet_array[i].activityType;
+		if (!(val in counter) && val != "" && val != "unknown"){
+			counter[val] = tweet_array[i].distance;
+		}
+
+		else if (val in counter) {
+			counter[val] += tweet_array[i].distance;
+		}
+	}
+
+	return counter;
+}
+
+function filter_popular(total_act){
+	let sorted = Object.fromEntries(Object.entries(total_act).sort((a, b) => b[1] - a[1]).slice(0, 3));
+	return sorted;
+
+}
+
+function shortest_distance(total_act, total_dis){
+	let lowest = 0;
+	let shortest_dis = "";
+	for ([key, val] of Object.entries(total_act)){
+		let average = total_dis[key] / val;
+		if (average < lowest && average != 0) {
+			lowest = average;
+			shortest_dis = key;
+		}
+	}
+	return shortest_dis;
+}
+
+function longest_distance(total_act, total_dis){
+	let highest = 0;
+	let longest_dis = "";
+	for ([key, val] of Object.entries(total_act)){
+		let average = total_dis[key] / val;
+		if (average > highest) {
+			highest = average;
+			longest_dis = key;
+		}
+	}
+	return longest_dis;
+}
+
+
+function activity_stats(tweet_array){
+	var counter = {};
+	for (let i = 0; i < tweet_array.length; i++){
+		let val = tweet_array[i].activityType;
+		if (!(val in counter) && val != "" && val != "unknown"){
+			counter[val] = 1;
+		}
+		else if (val in counter) {
+			counter[val] += 1;
+		}
+	}
+
+	return counter;
+}
+
 
 function tweet_written(tweet_array){
 	let writ_counter = 0;
