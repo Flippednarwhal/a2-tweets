@@ -31,36 +31,13 @@ function parseTweets(runkeeper_tweets) {
 
 	}
 
-
-	var weekdays = weekday(tweet_array);
-	var weekends = weekend(tweet_array);
-
-	var longest_week_act = weekday_vs_weekend(weekdays, weekends);
-
-
-	
-
-
-
-	var total_activites = activity_stats(tweet_array);
-
-	var total_dis = total_distance(tweet_array);
-
-	var popular_act = filter_popular(total_activites);
-
-	var longest = longest_distance(popular_act, total_dis);
-	var shortest = shortest_distance(popular_act, total_dis);
 	
 
 
 	event_num(tweet_array);
 
-	console.log(total_activites);
-	console.log(Object.keys(total_activites).length);
-
-	var all_act = document.getElementById('numberActivities');
-	all_act.textContent = Object.keys(total_activites).length;
 	
+
 	
 
 	//This line modifies the DOM, searching for the tag with the numberTweets ID and updating the text.
@@ -68,137 +45,6 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementById('numberTweets').innerText = tweet_array.length;	
 }
 
-// function activity_across_total(total_act){
-// 	let total = 0;
-
-// 	for ([key, val] of Object.entries(total_act)){
-
-// 	}
-
-// }
-
-function weekday_vs_weekend(weekdays, weekend){
-	var total_weekday_activites = activity_stats(weekdays);
-
-	var total_weekday_dis = total_distance(weekdays);
-
-	var longest_weekday = longest_distance_week(total_weekday_activites, total_weekday_dis);
-
-
-	var total_weekend_activites = activity_stats(weekend);
-
-	var total_weekend_dis = total_distance(weekend);
-
-	var longest_weekend = longest_distance_week(total_weekend_activites, total_weekend_dis);
-
-	if (longest_weekday > longest_weekend){
-		return "weekdays";
-	}
-
-	return "weekends";
-}
-
-function weekday(tweet_array){
-	var new_tweet_array = [];
-
-	for (let i = 0; i < tweet_array.length; i++){
-		if (tweet_array[i].time.getDay() != 6 && tweet_array[i].time.getDay() != 0){
-			new_tweet_array.push(tweet_array[i]);
-		}
-	}
-
-	return new_tweet_array;
-}
-
-function weekend(tweet_array){
-	var new_tweet_array = [];
-
-	for (let i = 0; i < tweet_array.length; i++){
-		if (tweet_array[i].time.getDay() == 6 || tweet_array[i].time.getDay() == 0){
-			new_tweet_array.push(tweet_array[i]);
-		}
-	}
-
-	return new_tweet_array;
-}
-
-function total_distance(tweet_array){
-	var counter = {};
-
-	for (let i = 0; i < tweet_array.length; i++){
-		let val = tweet_array[i].activityType;
-		if (!(val in counter) && val != "" && val != "unknown"){
-			counter[val] = tweet_array[i].distance;
-		}
-
-		else if (val in counter) {
-			counter[val] += tweet_array[i].distance;
-		}
-	}
-
-	return counter;
-}
-
-function filter_popular(total_act){
-	let sorted = Object.fromEntries(Object.entries(total_act).sort((a, b) => b[1] - a[1]).slice(0, 3));
-	return sorted;
-
-}
-
-function shortest_distance(total_act, total_dis){
-	let lowest = Infinity;
-	let shortest_dis = "";
-	for ([key, val] of Object.entries(total_act)){
-		let average = total_dis[key] / val;
-		if (average < lowest && average != 0) {
-			lowest = average;
-			shortest_dis = key;
-		}
-	}
-	return shortest_dis;
-}
-
-function longest_distance(total_act, total_dis){
-	let highest = 0;
-	let longest_dis = "";
-	for ([key, val] of Object.entries(total_act)){
-		let average = total_dis[key] / val;
-		if (average > highest) {
-			highest = average;
-			longest_dis = key;
-		}
-	}
-	return longest_dis;
-}
-
-function longest_distance_week(total_act, total_dis){
-	let total_distance = 0;
-	let total_activities = 0;
-	for ([key, val] of Object.entries(total_act)){
-		total_distance += total_dis[key];
-		total_activities += val;
-	}
-	let average = total_distance / total_activities;
-	return average;
-}
-
-
-
-
-function activity_stats(tweet_array){
-	var counter = {};
-	for (let i = 0; i < tweet_array.length; i++){
-		let val = tweet_array[i].activityType;
-		if (!(val in counter) && val != "" && val != "unknown"){
-			counter[val] = 1;
-		}
-		else if (val in counter) {
-			counter[val] += 1;
-		}
-	}
-
-	return counter;
-}
 
 
 function tweet_written(tweet_array){
