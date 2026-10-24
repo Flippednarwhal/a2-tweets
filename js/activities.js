@@ -17,9 +17,12 @@ function parseTweets(runkeeper_tweets) {
 
 	var total_activites = activity_stats(tweet_array);
 
-	console.log(total_activites);
+
+
 
 	var total_dis = total_distance(tweet_array);
+
+
 
 	var popular_act = filter_popular(total_activites);
 
@@ -52,19 +55,96 @@ function parseTweets(runkeeper_tweets) {
 
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
 
-	// activity_vis_spec = {
-	//   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-	//   "description": "A graph of the number of Tweets containing each type of activity.",
-	//   "data": {
-	//     "values": tweet_array
-	//   }
-	//   //TODO: Add mark and encoding
-	// };
+	var graph_act = [];
 
-	// vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
+
+	for ([key, value] of Object.entries(total_activites)){
+		graph_act.push({"activity": key, "amount": value})
+	}
+
+
+	
+	var graph_popular = [];
+
+
+	for ([key, value] of Object.entries(popular_act)){
+		graph_popular.push(key);
+	}
+
+	var days_graph = day_distance(tweet_array, graph_popular);
+
+
+
+
+
+	console.log(days_graph);
+
+	activity_vis_spec = {
+	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	  "description": "A graph of the number of Tweets containing each type of activity.",
+	  "data": {
+	    "values": graph_act
+	  },
+	  "mark": "bar",
+	  "encoding": {
+		"x": {"field": "activity", "type": "nominal"},
+		"y": {"field": "amount", "type": "quantitative"}
+	  },
+	  //TODO: Add mark and encoding
+	};
+
+	distance_vis_spec = {
+	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	  "description": "A graph of the number of Tweets containing each type of activity.",
+	  "data": {
+	    "values": days_graph
+	  },
+	  "mark": "point",
+	  "encoding": {
+		"x": {"timeUnit": "day", "field": "day", "type": "nominal"},
+		"y": {"field": "distance", "type": "quantitative"},
+		"color" : {"field": "activity", "type": "nominal"}
+	  },
+	  "color" : {"field": "activity", "type": "nominal"}
+	  //TODO: Add mark and encoding
+	};
+
+	
+
+	
+
+	
+
+	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
+	vegaEmbed('#distanceVis', distance_vis_spec, {actions:false});
+
 
 	//TODO: create the visualizations which group the three most-tweeted activities by the day of the week.
 	//Use those visualizations to answer the questions about which activities tended to be longest and when.
+}
+
+function day_distance(tweet_array, activities){
+
+	var act_counter = [];
+
+	for (let i = 0; i < tweet_array.length; i++){
+		let val = tweet_array[i].activityType;
+
+		if (val == activities[0]){
+			act_counter.push({"activity": activities[0], "day": tweet_array[i].time, "distance": tweet_array[i].distance})
+		}
+
+		else if (val == activities[1]){
+			act_counter.push({"activity": activities[1], "day": tweet_array[i].time, "distance": tweet_array[i].distance})
+		}
+
+		else if (val == activities[2]){
+			act_counter.push({"activity": activities[2], "day": tweet_array[i].time, "distance": tweet_array[i].distance})
+		}
+
+	}
+
+	return act_counter;
 }
 
 
