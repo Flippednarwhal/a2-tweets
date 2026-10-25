@@ -18,10 +18,7 @@ function parseTweets(runkeeper_tweets) {
 	var total_activites = activity_stats(tweet_array);
 
 
-
-
 	var total_dis = total_distance(tweet_array);
-
 
 
 	var popular_act = filter_popular(total_activites);
@@ -105,22 +102,64 @@ function parseTweets(runkeeper_tweets) {
 		"y": {"field": "distance", "type": "quantitative"},
 		"color" : {"field": "activity", "type": "nominal"}
 	  },
-	  "color" : {"field": "activity", "type": "nominal"}
 	  //TODO: Add mark and encoding
 	};
 
-	
+	aggregated_vis_spec = {
+	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	  "description": "A graph of the number of Tweets containing each type of activity.",
+	  "data": {
+	    "values": days_graph
+	  },
+	  "mark": "point",
+	  "encoding": {
+		"x": {"timeUnit": "day", "field": "day", "type": "nominal"},
+		"y": {"aggregate": "mean", "field": "distance"},
+		"color" : {"field": "activity", "type": "nominal"}
+	  },
+	  //TODO: Add mark and encoding
+	};
 
-	
+	button_switching();
 
 	
 
 	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
 	vegaEmbed('#distanceVis', distance_vis_spec, {actions:false});
+	vegaEmbed('#distanceVisAggregated', aggregated_vis_spec, {actions:false});
 
 
 	//TODO: create the visualizations which group the three most-tweeted activities by the day of the week.
 	//Use those visualizations to answer the questions about which activities tended to be longest and when.
+}
+
+function button_switching (){
+	var distance_mean = document.getElementById("distanceVisAggregated");
+	var distance_wm = document.getElementById("distanceVis");
+
+	var button_element = document.getElementById("aggregate");
+
+	button_element.addEventListener('click', appear_graph)
+
+	distance_mean.style.display = "none";
+
+
+	function appear_graph(){
+
+		if (distance_mean.style.display == "none"){
+			distance_mean.style.display = "";
+			distance_wm.style.display = "none"
+			button_element.textContent = "Show all activities";
+		}
+
+		else {
+			distance_mean.style.display = "none";
+			distance_wm.style.display = ""
+			button_element.textContent = "Show means";
+		}
+
+	}
+
 }
 
 function day_distance(tweet_array, activities){
