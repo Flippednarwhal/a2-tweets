@@ -74,8 +74,6 @@ function parseTweets(runkeeper_tweets) {
 
 
 
-	console.log(days_graph);
-
 	activity_vis_spec = {
 	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 	  "description": "A graph of the number of Tweets containing each type of activity.",
