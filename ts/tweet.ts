@@ -9,7 +9,7 @@ class Tweet {
 
 	//returns either 'live_event', 'achievement', 'completed_event', or 'miscellaneous'
     get source():string {
-        //TODO: identify whether the source is a live event, an achievement, a completed event, or miscellaneous.
+        // check what category the tweet is apart of
         if (this.text.includes("Just completed") || this.text.includes("Just posted")) {
             return 'completed_event';
         }
@@ -35,10 +35,11 @@ class Tweet {
     }
 
     get writtenText():string {
+        // checks if the tweet is written by a user
         if(!this.written) {
             return "";
         }
-        //TODO: parse the written text from the tweet
+
         var written = this.text;
 
         var cleaning_written = written.split(" ").slice(0, -2).join(' ');
@@ -52,15 +53,14 @@ class Tweet {
     }
 
     get activityType():string {
+        // returns the type of activity found in text
         if (this.source != 'completed_event') {
             return "unknown";
         }
 
-        //TODO: parse the activity type from the text of the tweet
         let split_text = this.text.split(' ');
 
         let index_dis = 4;
-        // let index_mi = split_text.indexOf("mi");
 
         let index_dash = split_text.indexOf('-');
         let index_with = split_text.indexOf('with');
@@ -100,6 +100,8 @@ class Tweet {
     }
 
     get distance():number {
+        // returns the distance traveled if applicable. Converts km to mi
+
         if(this.source != 'completed_event') {
             return 0;
         }
@@ -117,7 +119,6 @@ class Tweet {
             }
         }
 
-        //TODO: prase the distance from the text of the tweet
         return 0;
     }
 

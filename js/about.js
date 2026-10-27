@@ -48,6 +48,7 @@ function parseTweets(runkeeper_tweets) {
 
 
 function tweet_written(tweet_array){
+	// counts how many tweets were written
 	let writ_counter = 0;
 
 	for (i = 0; i < tweet_array.length; i++){
@@ -63,6 +64,7 @@ function tweet_written(tweet_array){
 
 // Loop (maybe done in parseTweets) through tweet_array and tick individual counter depending on each tweet object contents
 function event_num(tweet_array){
+	// create and object literal of the totals of activities
 	var counter = {completed: 0, achieved: 0, live: 0, misc: 0};
 
 	for (i = 0; i < tweet_array.length; i++) {
@@ -151,6 +153,7 @@ function event_num(tweet_array){
 
 
 function to_percent(event, total) {
+	// converts the totals of the most popular events into percentages
 	var event = (event / total) * 100;
 	var percent = event.toFixed(2);
 
@@ -159,6 +162,7 @@ function to_percent(event, total) {
 }
 
 function first_last(tweet_array) {
+	// gets the dates most recent and oldest tweets
 	var latest = tweet_array.at(0).time;
 	var earliest = tweet_array.at(-1).time;
 

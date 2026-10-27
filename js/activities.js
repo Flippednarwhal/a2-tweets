@@ -132,6 +132,7 @@ function parseTweets(runkeeper_tweets) {
 }
 
 function button_switching (){
+	// hides and reveals two different graphs (all activities and mean) on button press
 	var distance_mean = document.getElementById("distanceVisAggregated");
 	var distance_wm = document.getElementById("distanceVis");
 
@@ -188,6 +189,7 @@ function day_distance(tweet_array, activities){
 
 
 function weekday_vs_weekend(weekdays, weekend){
+	// manages all weekend and weekday calls
 	var total_weekday_activites = activity_stats(weekdays);
 
 	var total_weekday_dis = total_distance(weekdays);
@@ -209,6 +211,7 @@ function weekday_vs_weekend(weekdays, weekend){
 }
 
 function weekday(tweet_array){
+	// checks if the tweet date is a weekday
 	var new_tweet_array = [];
 
 	for (let i = 0; i < tweet_array.length; i++){
@@ -221,6 +224,7 @@ function weekday(tweet_array){
 }
 
 function weekend(tweet_array){
+	// checks if the tweet date is a weekend
 	var new_tweet_array = [];
 
 	for (let i = 0; i < tweet_array.length; i++){
@@ -234,6 +238,7 @@ function weekend(tweet_array){
 
 
 function total_distance(tweet_array){
+	// create an object literal of the totals of each activity
 	var counter = {};
 
 	for (let i = 0; i < tweet_array.length; i++){
@@ -251,12 +256,14 @@ function total_distance(tweet_array){
 }
 
 function filter_popular(total_act){
+	// get the most popular activities
 	let sorted = Object.fromEntries(Object.entries(total_act).sort((a, b) => b[1] - a[1]).slice(0, 3));
 	return sorted;
 
 }
 
 function shortest_distance(total_act, total_dis){
+	// get the shorest on average activity
 	let lowest = Infinity;
 	let shortest_dis = "";
 	for ([key, val] of Object.entries(total_act)){
@@ -270,6 +277,7 @@ function shortest_distance(total_act, total_dis){
 }
 
 function longest_distance(total_act, total_dis){
+	// get the longest on average activity
 	let highest = 0;
 	let longest_dis = "";
 	for ([key, val] of Object.entries(total_act)){
@@ -283,6 +291,7 @@ function longest_distance(total_act, total_dis){
 }
 
 function longest_distance_week(total_act, total_dis){
+	// get the average longest average distance for week with returning a number
 	let total_distance = 0;
 	let total_activities = 0;
 	for ([key, val] of Object.entries(total_act)){
@@ -294,6 +303,7 @@ function longest_distance_week(total_act, total_dis){
 }
 
 function activity_stats(tweet_array){
+	// get the sum total of all different activities
 	var counter = {};
 	for (let i = 0; i < tweet_array.length; i++){
 		let val = tweet_array[i].activityType;

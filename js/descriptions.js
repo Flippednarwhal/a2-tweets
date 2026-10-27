@@ -15,8 +15,8 @@ function parseTweets(runkeeper_tweets) {
 }
 
 function search(tweet_array){
+	// searches for word in a tweet and returns an array of objects after cleaning it
 	var user_tweets = [];
-	//TODO: Filter to just the written tweets
 	for (let i = 0; i < tweet_array.length; i++){
 		if (tweet_array[i].written){
 			user_tweets.push({index: 0, activity: tweet_array[i].activityType, message: tweet_array[i].text});
@@ -52,7 +52,7 @@ function search(tweet_array){
 }
 
 function column_adder(search_query){
-
+	//adds the found results to the columns in the search dom
 	var tbody = document.getElementById('tweetTable');
 
 	if (tbody){
@@ -69,7 +69,7 @@ function column_adder(search_query){
 }
 
 function addEventHandlerForSearch() {
-	//TODO: Search the written tweets as text is entered into the search box, and add them to the table
+	// calls search and column_adder on input event
 	var search_bar = document.getElementById('textFilter');
 
 	search_bar.addEventListener('input', () =>  {
